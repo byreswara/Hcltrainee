@@ -1,12 +1,14 @@
 pipeline {
     agent any
+     tools {
+       maven 'maven'
+           }
 	stages {
 	  stage('build') {
             steps {
-		withMaven {
-                    sh "mvn clean verify"
+		tool name: 'maven', type: 'maven'
+                sh 'mvn package'
 		}
-	    }    
 	      }
             }
 }
