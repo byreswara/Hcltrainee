@@ -3,9 +3,10 @@ pipeline {
 	stages {
 	  stage('build') {
             steps {
-		tool name: 'maven', type: 'maven'
-                sh 'mvn package'
+		withMaven {
+                    sh "mvn clean verify"
 		}
+	    }    
 	      }
             }
 }
