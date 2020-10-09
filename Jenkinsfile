@@ -4,18 +4,13 @@ pipeline {
        maven 'maven'
            }
 	stages {
-	  stage('build') {
+	  stage('build and sonar analysis') {
             steps {
 		tool name: 'maven', type: 'maven'
-                sh 'mvn package'
+                sh 'mvn clean package sonar:sonar'
 		}
 	      }
-          stage('sonar') {
-            steps {
-		withSonarQubeEnv('My SonarQube Server') {
-                sh 'mvn sonar:sonar'
-              }
-		}
+		
 	      }
 	  stage("Quality Gate status") {
             steps {
