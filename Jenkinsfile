@@ -32,7 +32,7 @@ pipeline {
             }
           }
 	  */
-	   stage("Quality Gate status") {
+	   stage("deploy remote server") {
             steps {
 		sshPublisher(publishers: [sshPublisherDesc(configName: 'Tomcat', 
 							   transfers: [sshTransfer(cleanRemote: false, 
@@ -43,7 +43,7 @@ pipeline {
 							noDefaultExcludes: false, 
 					patternSeparator: '[, ]+', 
 					remoteDirectory: '/home/tomcat/tomcat/webapps/', 
-				remoteDirectorySDF: false, removePrefix: '', 
+				remoteDirectorySDF: false, removePrefix: '/home/tomcat/tomcat/webapps/', 
 			sourceFiles: '/var/lib/jenkins/workspace/Hello-world/target/*.war')], 
                             usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 	    }
