@@ -13,7 +13,6 @@ pipeline {
           stage('sonar') {
             steps {
 		withSonarQubeEnv('My SonarQube Server') {
-		tool name: 'maven', type: 'maven'
                 sh 'mvn sonar:sonar'
               }
 		}
