@@ -42,7 +42,7 @@ pipeline {
 							makeEmptyDirs: false, 
 							noDefaultExcludes: false, 
 					patternSeparator: '[, ]+', 
-					remoteDirectory: '/home/tomcat/tomcat/webapps/', 
+					remoteDirectory: '', 
 				remoteDirectorySDF: false, removePrefix: 'target', 
 			sourceFiles: 'target/*.war')], 
                             usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
