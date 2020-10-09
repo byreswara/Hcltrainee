@@ -32,10 +32,27 @@ pipeline {
             }
           }
 	  */
-          stage('deploy') {
+	   stage("Quality Gate status") {
+            steps {
+		sshPublisher(publishers: [sshPublisherDesc(configName: 'Tomcat', 
+							   transfers: [sshTransfer(cleanRemote: false, 
+							   excludes: '', execCommand: '', 
+							execTimeout: 120000, 
+							flatten: false, 
+							makeEmptyDirs: false, 
+							noDefaultExcludes: false, 
+					patternSeparator: '[, ]+', 
+					remoteDirectory: '/home/tomcat/tomcat/webapps/', 
+				remoteDirectorySDF: false, removePrefix: '', 
+			sourceFiles: '**/*.war')], 
+                            usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+	    }
+	   }
+         /* stage('deploy') {
             steps {
                 sh 'cp /var/lib/jenkins/workspace/Hello-world/target/java-tomcat-maven-example.war /opt/tomcat-8.5/webapps/'
 		}
 	      }
+	  */
             }
 }
