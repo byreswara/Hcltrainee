@@ -16,6 +16,13 @@ pipeline {
                 sh 'mvn sonar:sonar -Dsonar.host.url=http://13.229.63.99:9000 -Dsonar.login=989544f9bd32add330bb1e8aae8e60cfef053c9c'
 		}
 	      }
+	  stage("Quality Gate status") {
+            steps {
+              timeout(time: 1, unit: 'HOURS') {
+                waitForQualityGate abortPipeline: true
+              }
+            }
+          }	
           stage('deploy') {
             steps {
                 sh 'cp /var/lib/jenkins/workspace/Hello-world/target/java-tomcat-maven-example.war /opt/tomcat-8.5/webapps/'
