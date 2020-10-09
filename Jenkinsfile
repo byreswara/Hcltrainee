@@ -54,5 +54,10 @@ pipeline {
 		}
 	      }
 	  */
+	  stage("jacoco") {
+            steps {
+		jacoco execPattern: '**/**.class'
+	    }
+	  }
             }
 }
