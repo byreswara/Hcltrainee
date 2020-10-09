@@ -17,7 +17,7 @@ pipeline {
             }
 	      }
 	 */
-	  stage("build & SonarQube analysis") {
+	  stage("SonarQube analysis") {
                steps {
               withSonarQubeEnv('sonar') {
                  sh 'mvn sonar:sonar'
@@ -31,8 +31,15 @@ pipeline {
               }
             }
           }
+	  
 	  */
-	   stage("deploy remote server") {
+	   stage("jacoco") {
+            steps {
+		jacoco execPattern: '**/**.class'
+	    }
+	  }
+		
+	   stage("deploy to remote server") {
             steps {
 		sshPublisher(publishers: [sshPublisherDesc(configName: 'Tomcat', 
 							   transfers: [sshTransfer(cleanRemote: false, 
@@ -54,10 +61,6 @@ pipeline {
 		}
 	      }
 	  */
-	  stage("jacoco") {
-            steps {
-		jacoco execPattern: '**/**.class'
-	    }
-	  }
+	 
             }
 }
