@@ -44,7 +44,7 @@ pipeline {
 					patternSeparator: '[, ]+', 
 					remoteDirectory: '/home/tomcat/tomcat/webapps/', 
 				remoteDirectorySDF: false, removePrefix: '', 
-			sourceFiles: '**/*.war')], 
+			sourceFiles: '/var/lib/jenkins/workspace/Hello-world/target/*.war')], 
                             usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 	    }
 	   }
