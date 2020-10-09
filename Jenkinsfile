@@ -24,13 +24,14 @@ pipeline {
               }    
           }
       }
-	  stage("Quality Gate status") {
+	  /*stage("Quality Gate status") {
             steps {
               timeout(time: 1, unit: 'HOURS') {
                 waitForQualityGate abortPipeline: true
               }
             }
-          }	
+          }
+	  */
           stage('deploy') {
             steps {
                 sh 'cp /var/lib/jenkins/workspace/Hello-world/target/java-tomcat-maven-example.war /opt/tomcat-8.5/webapps/'
