@@ -73,7 +73,7 @@ pipeline {
 
 // APPROVAL STAGE USING SLACK NOTIFICATION //
    //1st  try	//
-	 stage('Slack it'){
+	 stage('Slack notification'){
             steps {
               /*slackSend channel: '#devops', 
 		      color: 'good', 
@@ -83,8 +83,8 @@ pipeline {
     // 2nd try  //
 	     slackSend (baseUrl: "https://hcl-emb5598.slack.com/",
 		        channel: "#devops", 
-			color: '#4286f4', 
-			message: "Deploy Approval: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL/input/})")
+			color: "#4286f4", 
+			message: "Deploy Approval: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL}/input)")
                 script {
                     try {
                         timeout(time:30, unit:'MINUTES') {
