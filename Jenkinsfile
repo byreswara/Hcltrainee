@@ -67,7 +67,8 @@ pipeline {
 	    }
 	post {
          always {
-    emailext attachLog: true, body: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:', subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', to: 'byreswar@gmail.com'
+	mail bcc: '', body: 'this is jenkins job info', cc: '', from: '', replyTo: '', subject: 'jenkins job', to: 'byreswar@gmail.com' 
+	emailext attachLog: true, body: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:', subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', to: 'byreswar@gmail.com'
   }
 }
 	   }
