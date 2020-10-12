@@ -1,8 +1,16 @@
 pipeline {
     agent any
     stages {
-
-// APPROVAL STAGE USING SLACK NOTIFICATION //
+stage ('Deploy To Prod'){
+                //input{
+                 //  message "Do you want to proceed for production deployment?"
+                //  }
+		input message: 'Deploy to Production', ok: 'Continue',
+                                parameters: [choice(name: 'APPROVE_PROD', choices: 'YES\nNO', description: 'Deploy from STAGING?')]
+              steps { sh 'echo "Deploy into Prod"'}
+                
+              }
+/*// APPROVAL STAGE USING SLACK NOTIFICATION //
    //1st  try	//
 	 stage('Slack notification'){
             steps {
@@ -39,6 +47,7 @@ pipeline {
        // 2nd try end  //
             }
         }
+*/
 // END APPROVAL STAGE USING SLACK NOTIFICATION //
 }
 }
