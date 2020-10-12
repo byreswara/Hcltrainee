@@ -4,10 +4,10 @@ pipeline {
        maven 'maven'
            }
 	stages {
-	  stage('build and package') {
+	  stage('compile') {
             steps {
 		tool name: 'maven', type: 'maven'
-                sh 'mvn clean package'
+                sh 'mvn clean compile'
 		}
 	      }
 	/*stage('sonar') {
@@ -72,6 +72,12 @@ pipeline {
 		}
 	      }
 	  */
+	post {
+         success {
+    mail bcc: '', body: '${JOB_NAME}  status is [${BUILD_STATUS}]', cc: '', from: '', replyTo: '', subject: '[${BUILD_STATUS}]${JOB_NAME} Build #${BUILD_NUMBER}', to: 'byreswar@gmail.com'
+  }
+}
+
 	 
             }
 }
