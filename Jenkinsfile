@@ -140,7 +140,7 @@ pipeline {
    // START POST BUILD EMAIL NOTIFICATION //
 	post {
          always {
-		 mail bcc: '', body: 'this is jenkins job', cc: '', from: '', replyTo: '', subject: 'jenkins job', to: 'byreswar@gmail.com'
+		 mail bcc: '', body: 'Build # $env.BUILD_NUMBER', cc: '', from: '', replyTo: '', subject: 'jenkins job', to: 'byreswar@gmail.com'
 	//mail bcc: '', body: 'this is jenkins job info' '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS:' , cc: '', from: '', replyTo: '', subject: 'jenkins job' '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS!', to: 'byreswar@gmail.com' 
 	//emailext attachLog: true, body: '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS:', subject: '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS!', to: 'byreswar@gmail.com'
              }
