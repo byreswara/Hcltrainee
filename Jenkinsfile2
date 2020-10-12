@@ -5,7 +5,7 @@ pipeline {
      // // hudson.plugins.sonar.SonarRunnerInstallation 'sonar-scanner'
            }
 	stages {
-	  stage('build and package') {
+	  stage('build and compile') {
             steps {
 		//tool name: 'maven', type: 'maven'
                 sh 'mvn clean compile'
