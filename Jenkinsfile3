@@ -10,9 +10,9 @@ stage ('Deploy To Prod'){
               steps { sh 'echo "Deploy into Prod"'}
                 
               }
-/*// APPROVAL STAGE USING SLACK NOTIFICATION //
+// APPROVAL STAGE USING SLACK NOTIFICATION //
    //1st  try	//
-	 stage('Slack notification'){
+/*	 stage('Slack notification'){
             steps {
               slackSend channel: '#devops', 
 		      color: 'good', 
