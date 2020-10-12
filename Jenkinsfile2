@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+     tools {
+       maven 'maven'
+       hudson.plugins.sonar.SonarRunnerInstallation 'sonar-scanner'
+           }
+	stages {
+	  stage('build and package') {
+            steps {
+		//tool name: 'maven', type: 'maven'
+                sh 'mvn clean package'
+		}
+	      }
+	/*stage('sonar') {
+            steps {
+             tool name: 'maven', type: 'maven'
+             sh 'mvn sonar:sonar  -Dsonar.host.url=http://13.229.63.99:9000 -Dsonar.login=989544f9bd32add330bb1e8aae8e60cfef053c9c'
+            }
+	      }
+	 */
+	  stage("SonarQube analysis") {
+               steps {
+              withSonarQubeEnv('sonar') {
+              tool name: 'sonar-scanner', type: 'tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation''
+                // sh 'mvn sonar:sonar'
+		   sh 'sonar-scanner -Dsonar.projectKey=myproject -Dsonar.sources=src'
+              }    
+          }
+      }
+	stage("Quality Gate status") {
+	  steps {
+	    script {
+                def qualitygate = waitForQualityGate()
+                if (qualitygate.status != "OK") {
+                  error "Pipeline aborted due to quality gate coverage failure: ${qualitygate.status}"	
+		}
+	    }
+	    }
+	}
+  }
+  }
