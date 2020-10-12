@@ -67,7 +67,7 @@ pipeline {
 	    }
 	post {
          always {
-    mail bcc: '', body: '${JOB_NAME}  status is [${BUILD_STATUS}]', cc: '', from: '', replyTo: '', subject: '[${BUILD_STATUS}]${JOB_NAME} Build #${BUILD_NUMBER}', to: 'byreswar@gmail.com'
+    emailext attachLog: true, body: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:', subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', to: 'byreswar@gmail.com'
   }
 }
 	   }
