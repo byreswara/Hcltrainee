@@ -33,7 +33,7 @@ pipeline {
                 waitForQualityGate abortPipeline: true
 		}
 		*/
-		}
+		
 		
 	   script {
                 def qualitygate = waitForQualityGate()
@@ -43,6 +43,6 @@ pipeline {
 	    }
 	    
 	    }
-	
+	}
   }
   }
