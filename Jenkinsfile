@@ -73,7 +73,7 @@ pipeline {
 	      }
 	  */
 	post {
-         success {
+         always {
     mail bcc: '', body: '${JOB_NAME}  status is [${BUILD_STATUS}]', cc: '', from: '', replyTo: '', subject: '[${BUILD_STATUS}]${JOB_NAME} Build #${BUILD_NUMBER}', to: 'byreswar@gmail.com'
   }
 }
