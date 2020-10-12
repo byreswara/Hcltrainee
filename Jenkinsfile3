@@ -2,10 +2,11 @@ pipeline {
     agent any
     stages {
 stage ('Deploy To Prod'){
+steps {
                 input{
                    message "Do you want to proceed for production deployment?"
                  }
-		
+		}
               }
 // APPROVAL STAGE USING SLACK NOTIFICATION //
    //1st  try	//
