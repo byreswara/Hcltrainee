@@ -104,21 +104,27 @@ pipeline {
 		      teamDomain: 'hcl-emb5598', tokenCredentialId: 'slack'
 		 */
     // 2nd method
-	     slackSend (channel: "#devops", color: '#4286f4', message: "Deploy Approval: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.JOB_DISPLAY_URL})")
+	     slackSend (baseUrl: https://hcl-emb5598.slack.com/
+		        channel: "#devops", 
+			color: '#4286f4', 
+			message: "Deploy Approval: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.JOB_DISPLAY_URL})")
                 script {
                     try {
                         timeout(time:30, unit:'MINUTES') {
                             env.APPROVE_PROD = input message: 'Deploy to Production', ok: 'Continue',
-                                parameters: [choice(name: 'APPROVE_PROD', choices: 'YES\nNO', description: 'Deploy from STAGING to PRODUCTION?')]
-                            if (env.APPROVE_PROD == 'YES'){
+                                parameters: [choice(name: 'APPROVE_PROD', choices: 'YES\nNO', description: 'Deploy from STAGING?')]
+                            if (env.APPROVE_PROD == 'YES')
+				{
                                 env.DPROD = true
-                            } else {
+                                } 
+			    else
+			       {
                                 env.DPROD = false
-                            }
+                                }
                         }
                     } catch (error) {
                         env.DPROD = true
-                        echo 'Timeout has been reached! Deploy to PRODUCTION automatically activated'
+                        echo 'Timeout has been reached! Deploy to STAGING automatically activated'
                     }
                 }
        // 2nd method end  //
