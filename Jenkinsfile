@@ -28,14 +28,6 @@ pipeline {
               }    
           }
       }
-//JACACO STAGE //
-		
-	 /*  stage("jacoco") {
-            steps {
-		jacoco execPattern: '**/**.class'
-	    }
-	  }
-	*/
 
 //SOANR QUALITY GATES STAGE START //
 		
