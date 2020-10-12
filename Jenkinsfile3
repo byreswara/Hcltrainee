@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+    stages {
+
+// APPROVAL STAGE USING SLACK NOTIFICATION //
+   //1st  try	//
+	 stage('Slack notification'){
+            steps {
+              /*slackSend channel: '#devops', 
+		      color: 'good', 
+		      message: 'slackSend "started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"', 
+		      teamDomain: 'hcl-emb5598', tokenCredentialId: 'slack'
+		 */
+    // 2nd try  //
+	     slackSend (baseUrl: "https://hcl-emb5598.slack.com/",
+		        channel: "#devops", 
+			color: "#4286f4", 
+			message: "Deploy Approval: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                script {
+                    try {
+                        timeout(time:30, unit:'MINUTES') {
+                            env.APPROVE_PROD = input message: 'Deploy to Production', ok: 'Continue',
+                                parameters: [choice(name: 'APPROVE_PROD', choices: 'YES\nNO', description: 'Deploy from STAGING?')]
+                            if (env.APPROVE_PROD == 'YES')
+				{
+                                env.DPROD = true
+                                } 
+			    else
+			       {
+                                env.DPROD = false
+                                }
+                        }
+                    } catch (error) {
+                        env.DPROD = true
+                        echo 'Timeout has been reached! Deploy to STAGING automatically activated'
+                    }
+                }
+       // 2nd try end  //
+            }
+        }
+// END APPROVAL STAGE USING SLACK NOTIFICATION //
+}
+}
