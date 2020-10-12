@@ -22,8 +22,8 @@ pipeline {
                steps {
               withSonarQubeEnv('sonar') {
              // tool name: 'sonar-scanner', type: 'tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation''
-                // sh 'mvn sonar:sonar'
-		   sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=myproject -Dsonar.sources=src'
+                 sh 'mvn sonar:sonar'
+		  // sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=myproject -Dsonar.sources=src'
               }    
           }
       }
