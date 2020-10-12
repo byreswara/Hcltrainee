@@ -8,7 +8,7 @@ pipeline {
 	  stage('build and package') {
             steps {
 		//tool name: 'maven', type: 'maven'
-                sh 'mvn clean package'
+                sh 'mvn clean compile'
 		}
 	      }
 	/*stage('sonar') {
