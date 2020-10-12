@@ -21,7 +21,7 @@ pipeline {
 	  stage("SonarQube analysis") {
                steps {
               withSonarQubeEnv('sonar') {
-              tool name: 'sonar-scanner', type: 'tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation''
+             // tool name: 'sonar-scanner', type: 'tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation''
                 // sh 'mvn sonar:sonar'
 		   sh 'sonar-scanner -Dsonar.projectKey=myproject -Dsonar.sources=src'
               }    
