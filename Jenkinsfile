@@ -63,11 +63,13 @@ pipeline {
 // APPROVAL STAGE USING INPUT //
 
 	/*  stage ('Deploy To Prod'){
-                input{
-                   message "Do you want to proceed for production deployment?"
-                  }
-              steps { sh 'echo "Deploy into Prod"'
-                 }
+                //input{
+                 //  message "Do you want to proceed for production deployment?"
+                //  }
+		input message: 'Deploy to Production', ok: 'Continue',
+                                parameters: [choice(name: 'APPROVE_PROD', choices: 'YES\nNO', description: 'Deploy from STAGING?')]
+              steps { sh 'echo "Deploy into Prod"'}
+                
               }
 	*/
 
