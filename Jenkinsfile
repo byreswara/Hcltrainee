@@ -104,7 +104,7 @@ pipeline {
                         echo 'Timeout has been reached! Deploy to STAGING automatically activated'
                     }
                 }
-       // 2nd method end  //
+       // 2nd try end  //
             }
         }
 // END APPROVAL STAGE USING SLACK NOTIFICATION //
@@ -141,11 +141,11 @@ pipeline {
 	post {
          always {
 	mail bcc: '', body: 'this is jenkins job info' '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS:' , cc: '', from: '', replyTo: '', subject: 'jenkins job' '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS!', to: 'byreswar@gmail.com' 
-	emailext attachLog: true, body: '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS:', subject: '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS!', to: 'byreswar@gmail.com'
+	//emailext attachLog: true, body: '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS:', subject: '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS!', to: 'byreswar@gmail.com'
              }
            }
-		   
- //END START REMOTE DEPOYMENT STAGE //
+   
         }
+ //END START REMOTE DEPOYMENT STAGE //	
      }
 }
