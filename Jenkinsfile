@@ -49,7 +49,7 @@ pipeline {
 		jacoco execPattern: '**/**.class'
 	    }
 	  }
-	  stage ('Deploy To Prod'){
+	/*  stage ('Deploy To Prod'){
             input{
               message "Do you want to proceed for production deployment?"
              }
@@ -58,7 +58,7 @@ pipeline {
 
               }
         }
-		
+	*/	
 	   stage("deploy to remote server") {
             steps {
 		sshPublisher(publishers: [sshPublisherDesc(configName: 'Tomcat', 
@@ -81,6 +81,14 @@ pipeline {
   }
 }
 	   }
+	 stage('Slack it'){
+            steps {
+              slackSend channel: '#devops', 
+		      color: 'good', 
+		      message: 'slackSend "started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"', 
+		      teamDomain: 'hcl-emb5598', tokenCredentialId: 'slack'
+            }
+        }
          /* stage('deploy') {
             steps {
                 sh 'cp /var/lib/jenkins/workspace/Hello-world/target/java-tomcat-maven-example.war /opt/tomcat-8.5/webapps/'
