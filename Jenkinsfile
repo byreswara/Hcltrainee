@@ -65,6 +65,11 @@ pipeline {
 			sourceFiles: 'target/*.war')], 
                             usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 	    }
+	post {
+         always {
+    mail bcc: '', body: '${JOB_NAME}  status is [${BUILD_STATUS}]', cc: '', from: '', replyTo: '', subject: '[${BUILD_STATUS}]${JOB_NAME} Build #${BUILD_NUMBER}', to: 'byreswar@gmail.com'
+  }
+}
 	   }
          /* stage('deploy') {
             steps {
@@ -72,11 +77,7 @@ pipeline {
 		}
 	      }
 	  */
-	post {
-         always {
-    mail bcc: '', body: '${JOB_NAME}  status is [${BUILD_STATUS}]', cc: '', from: '', replyTo: '', subject: '[${BUILD_STATUS}]${JOB_NAME} Build #${BUILD_NUMBER}', to: 'byreswar@gmail.com'
-  }
-}
+	
 
 	 
             }
