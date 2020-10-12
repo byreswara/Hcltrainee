@@ -50,52 +50,29 @@ pipeline {
           }
 	  
 	  */
-// APPROVAL STAGE //
+//PACKAGING STAGE //
+		
+	stage('package') {
+            steps {
+		tool name: 'maven', type: 'maven'
+                sh 'mvn package'
+		}
+	      }	
+//END PACKAGING STAGE //
+		
+// APPROVAL STAGE USING INPUT //
 
 	/*  stage ('Deploy To Prod'){
-            input{
-              message "Do you want to proceed for production deployment?"
-             }
-    steps {
-                sh 'echo "Deploy into Prod"'
-
+                input{
+                   message "Do you want to proceed for production deployment?"
+                  }
+              steps { sh 'echo "Deploy into Prod"'
+                 }
               }
-        }
 	*/
-//DEPLOYMENT SRAGE//
-    /* stage('deploy') {
-            steps {
-                sh 'cp /var/lib/jenkins/workspace/Hello-world/target/java-tomcat-maven-example.war /opt/tomcat-8.5/webapps/'
-		}
-	      }
-	  */
-//REMOTE DEPOYMENT STAGE //
 
-	   stage("deploy to remote server") {
-            steps {
-		sshPublisher(publishers: [sshPublisherDesc(configName: 'Tomcat', 
-							   transfers: [sshTransfer(cleanRemote: false, 
-							   excludes: '', execCommand: '', 
-							execTimeout: 120000, 
-							flatten: false, 
-							makeEmptyDirs: false, 
-							noDefaultExcludes: false, 
-					patternSeparator: '[, ]+', 
-					remoteDirectory: '', 
-				remoteDirectorySDF: false, removePrefix: 'target', 
-			sourceFiles: 'target/*.war')], 
-                            usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-	    }
-
-   // POST BUILD EMAIL NOTIFICATION //
-	post {
-         always {
-	mail bcc: '', body: 'this is jenkins job info', cc: '', from: '', replyTo: '', subject: 'jenkins job', to: 'byreswar@gmail.com' 
-	emailext attachLog: true, body: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:', subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', to: 'byreswar@gmail.com'
-             }
-           }
-        }
-// SLACK NOTIFICATION STAGE //
+// APPROVAL STAGE USING SLACK NOTIFICATION //
+   //1st  try	//
 	 stage('Slack it'){
             steps {
               /*slackSend channel: '#devops', 
@@ -103,11 +80,11 @@ pipeline {
 		      message: 'slackSend "started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"', 
 		      teamDomain: 'hcl-emb5598', tokenCredentialId: 'slack'
 		 */
-    // 2nd method
+    // 2nd try  //
 	     slackSend (baseUrl: "https://hcl-emb5598.slack.com/",
 		        channel: "#devops", 
 			color: '#4286f4', 
-			message: "Deploy Approval: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.JOB_DISPLAY_URL})")
+			message: "Deploy Approval: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL/input/})")
                 script {
                     try {
                         timeout(time:30, unit:'MINUTES') {
@@ -130,6 +107,45 @@ pipeline {
        // 2nd method end  //
             }
         }
+// END APPROVAL STAGE USING SLACK NOTIFICATION //
 
-            }
+//DEPLOYMENT SRAGE//
+    /* stage('deploy') {
+            steps {
+                sh 'cp /var/lib/jenkins/workspace/Hello-world/target/java-tomcat-maven-example.war /opt/tomcat-8.5/webapps/'
+		}
+	      }
+	  */
+//END DEPLOYMENT SRAGE//
+		
+//START REMOTE DEPOYMENT STAGE //
+
+	   stage("deploy to remote server") {
+            steps {
+		sshPublisher(publishers: [sshPublisherDesc(configName: 'Tomcat', 
+							   transfers: [sshTransfer(cleanRemote: false, 
+							   excludes: '', execCommand: '', 
+							execTimeout: 120000, 
+							flatten: false, 
+							makeEmptyDirs: false, 
+							noDefaultExcludes: false, 
+					patternSeparator: '[, ]+', 
+					remoteDirectory: '/home/ec2-user/tomcat/webapps', 
+				remoteDirectorySDF: false, removePrefix: 'target', 
+			sourceFiles: 'target/*.war')], 
+                            usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+	    }
+
+		   
+   // START POST BUILD EMAIL NOTIFICATION //
+	post {
+         always {
+	mail bcc: '', body: 'this is jenkins job info' '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS:' , cc: '', from: '', replyTo: '', subject: 'jenkins job' '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS!', to: 'byreswar@gmail.com' 
+	emailext attachLog: true, body: '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS:', subject: '$env.PROJECT_NAME - Build # $env.BUILD_NUMBER - $env.BUILD_STATUS!', to: 'byreswar@gmail.com'
+             }
+           }
+		   
+ //END START REMOTE DEPOYMENT STAGE //
+        }
+     }
 }
