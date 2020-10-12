@@ -104,7 +104,7 @@ pipeline {
 		      teamDomain: 'hcl-emb5598', tokenCredentialId: 'slack'
 		 */
     // 2nd method
-	     slackSend (baseUrl: https://hcl-emb5598.slack.com/
+	     slackSend (baseUrl: "https://hcl-emb5598.slack.com/",
 		        channel: "#devops", 
 			color: '#4286f4', 
 			message: "Deploy Approval: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.JOB_DISPLAY_URL})")
