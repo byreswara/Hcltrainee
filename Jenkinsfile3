@@ -2,10 +2,10 @@ pipeline {
     agent any
     stages {
 stage ('Deploy To Prod'){
-steps {          emailext mimeType: 'text/html',
-                          subject: "[Jenkins]${currentBuild.fullDisplayName}",
-                          to: "byreswar@gmail.com",
-                           body: "${BUILD_URL}input"
+steps {         emailext attachLog: true, 
+		body: '${env.JENKINS_URL}', 
+		subject: '${env.JENKINS_URL}', 
+		to: 'byreswar@gmail.com'
 /*
 script {
                               def userInput = input id: 'userInput',
