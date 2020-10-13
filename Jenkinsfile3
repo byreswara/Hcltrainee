@@ -5,7 +5,8 @@ stage ('Deploy To Prod'){
 steps {          emailext mimeType: 'text/html',
                           subject: "[Jenkins]${currentBuild.fullDisplayName}",
                           to: "byreswar@gmail.com",
-                           body: '''<a href="${BUILD_URL}input">click to approve</a>'''
+                           body: "${BUILD_URL}input"
+/*
 script {
                               def userInput = input id: 'userInput',
                               message: 'Let\'s promote?', 
@@ -19,6 +20,27 @@ script {
         echo ("Target: "+userInput['target'])
         echo ("submitted by: "+userInput['submitter'])
 	}
+*/
+	
+script {
+                    try {
+                        timeout(time:30, unit:'MINUTES') {
+                            env.APPROVE_PROD = input message: 'Deploy to Production', ok: 'Continue',
+                                parameters: [choice(name: 'APPROVE_PROD', choices: 'YES\nNO', description: 'Deploy from STAGING?')]
+                            if (env.APPROVE_PROD == 'YES')
+				{
+                                env.DPROD = true
+                                } 
+			    else
+			       {
+                                env.DPROD = false
+                                }
+                        }
+                    } catch (error) {
+                        env.DPROD = true
+                        echo 'Timeout has been reached! Deploy to STAGING automatically activated'
+                    }
+                }
 		}
               }
 // APPROVAL STAGE USING SLACK NOTIFICATION //
