@@ -11,7 +11,7 @@ pipeline {
 
         NEXUS_CREDENTIAL_ID = "nexus_cred"
         
-        FILE_PATH = target/*.war
+        FILE_PATH = "target/*.war"
     }
 	stages {
 	  stage('package') {
@@ -26,3 +26,5 @@ pipeline {
               }
 		        }
 	   }
+}
+}
