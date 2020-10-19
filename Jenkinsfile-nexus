@@ -1,0 +1,28 @@
+pipeline {
+  agent any
+     tools {
+        maven 'maven'
+      }
+      environment {
+      
+        NEXUS_URL = "13.250.55.29:8081"
+        
+        NEXUS_REPO_ID = "releases"
+
+        NEXUS_CREDENTIAL_ID = "nexus_cred"
+        
+        FILE_PATH = target/*.war
+    }
+	stages {
+	  stage('package') {
+            steps {
+              script{
+                GROUP_ID=`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:groupId/text()' | xmllint --shell pom.xml | grep -v /`
+                ARTIFACT_ID=`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:artifactId/text()' | xmllint --shell pom.xml | grep -v /`
+                VERSION=`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:version/text()' | xmllint --shell pom.xml | grep -v /`.${BUILD_NUMBER}
+                sh "mvn package -DskipTests=true"
+                MVN -B deploy:deploy-file -Durl=$NEXUS_URL -DrepositoryId=$NEXUS_REPO_ID -DgroupId=$GROUP_ID -Dversion=$VERSION -DartifactId=$ARTIFACT_ID -Dpackaging=war -Dfile=$FILE_PATH
+              
+              }
+		        }
+	   }
