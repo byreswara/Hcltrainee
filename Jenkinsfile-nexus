@@ -4,17 +4,12 @@ pipeline {
         maven 'maven'
       }
       environment {
-      
-       GROUP_ID="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:groupId/text()' | xmllint --shell pom.xml | grep -v /`"
-       ARTIFACT_ID="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:artifactId/text()' | xmllint --shell pom.xml | grep -v /`"
-       VERSION="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:version/text()' | xmllint --shell pom.xml | grep -v /`.${BUILD_NUMBER}"
-      
+                  
         NEXUS_URL = "13.250.55.29:8081"
         
         NEXUS_REPO_ID = "releases"
 	
-	FILE_NAME="target/$ARTIFACT_ID-$VERSION.war"
-
+	FILE_NAME="target/hcl.war"
 
         NEXUS_CREDENTIAL_ID = "nexus_cred"
         
@@ -24,6 +19,10 @@ pipeline {
 	  stage('package') {
             steps {
               script{
+	      
+	GROUP_ID="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:groupId/text()' | xmllint --shell pom.xml | grep -v /`"
+       ARTIFACT_ID="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:artifactId/text()' | xmllint --shell pom.xml | grep -v /`"
+       VERSION="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:version/text()' | xmllint --shell pom.xml | grep -v /`.${BUILD_NUMBER}"
                 sh "mvn package -DskipTests=true"
 		sh "echo $VERSION"
 		
