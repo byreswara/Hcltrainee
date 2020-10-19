@@ -8,6 +8,9 @@ pipeline {
         NEXUS_URL = "13.250.55.29:8081"
         
         NEXUS_REPO_ID = "releases"
+	
+	FILE_NAME="target/$ARTIFACT_ID-$VERSION.war"
+
 
         NEXUS_CREDENTIAL_ID = "nexus_cred"
         
@@ -22,7 +25,7 @@ pipeline {
                 VERSION="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:version/text()' | xmllint --shell pom.xml | grep -v /`.${BUILD_NUMBER}"
                 sh "mvn package -DskipTests=true"
 		sh "echo $VERSION"
-		FILE_NAME="target/$ARTIFACT_ID-$VERSION.war"
+		
 		sh "echo $FILE_NAME"
                 sh "mvn -B deploy:deploy-file -Durl=$NEXUS_URL -DrepositoryId=$NEXUS_REPO_ID -DgroupId=$GROUP_ID -Dversion=$VERSION -DartifactId=$ARTIFACT_ID -Dpackaging=war -Dfile=$FILE_NAME"
               }
