@@ -6,7 +6,7 @@ pipeline {
       environment {
         NEXUS_URL = "http://13.250.55.29:8081/content/repositories/releases/"
 	NEXUS_REPO_ID = "releases"
-	NEXUS_CREDENTIAL_ID = "nexus_cred"
+//	NEXUS_CREDENTIAL_ID = "nexus_cred"
 	GROUP_ID="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:groupId/text()' | xmllint --shell pom.xml | grep -v /`"
         ARTIFACT_ID="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:artifactId/text()' | xmllint --shell pom.xml | grep -v /`"
       	VERSION="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:version/text()' | xmllint --shell pom.xml | grep -v /`"
@@ -14,7 +14,7 @@ pipeline {
         FILE_NAME="target/${ARTIFACT_ID}-${VERSION}.war"
       }
 	stages {
-	  stage('package') {
+	  stage('package & Deploy') {
             steps {
               script{
 	        sh "mvn package -DskipTests=true"
