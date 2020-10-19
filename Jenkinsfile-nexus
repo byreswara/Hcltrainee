@@ -4,32 +4,24 @@ pipeline {
         maven 'maven'
       }
       environment {
-                  
         NEXUS_URL = "http://13.250.55.29:8081/content/repositories/releases/"
-        
-        NEXUS_REPO_ID = "releases"
-	
+        NEXUS_REPO_ID = "snapshots"
 	NEXUS_CREDENTIAL_ID = "nexus_cred"
-        
-        
-    }
+	GROUP_ID="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:groupId/text()' | xmllint --shell pom.xml | grep -v /`"
+        ARTIFACT_ID="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:artifactId/text()' | xmllint --shell pom.xml | grep -v /`"
+      	VERSION="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:version/text()' | xmllint --shell pom.xml | grep -v /`"
+	NEXUS_VERSION="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:version/text()' | xmllint --shell pom.xml | grep -v /`.${BUILD_NUMBER}"
+        FILE_NAME="target/${ARTIFACT_ID}-${VERSION}.war"
+      }
 	stages {
 	  stage('package') {
             steps {
               script{
-	      
-		GROUP_ID="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:groupId/text()' | xmllint --shell pom.xml | grep -v /`"
-      		 ARTIFACT_ID="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:artifactId/text()' | xmllint --shell pom.xml | grep -v /`"
-      		 VERSION="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:version/text()' | xmllint --shell pom.xml | grep -v /`"
-		 NEXUS_VERSION="`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:version/text()' | xmllint --shell pom.xml | grep -v /`.${BUILD_NUMBER}"
-                sh "mvn package -DskipTests=true"
-		sh "echo $VERSION"
-		FILE_NAME="target/${ARTIFACT_ID}-${VERSION}.war"
-		sh "echo $FILE_NAME"
-                sh "mvn -B deploy:deploy-file -Durl=$NEXUS_URL -DrepositoryId=$NEXUS_REPO_ID -DgroupId=$GROUP_ID -Dversion=$NEXUS_VERSION -DartifactId=$ARTIFACT_ID -Dpackaging=war -Dfile=$FILE_NAME"
+	        sh "mvn package -DskipTests=true"
+		sh "mvn -B deploy:deploy-file -Durl=$NEXUS_URL -DrepositoryId=$NEXUS_REPO_ID -DgroupId=$GROUP_ID -Dversion=$NEXUS_VERSION -DartifactId=$ARTIFACT_ID -Dpackaging=war -Dfile=$FILE_NAME"
               }
-              }
-		        }
-	   }
+            }
+	  }
+       }
 }
 
