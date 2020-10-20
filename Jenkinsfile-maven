@@ -17,7 +17,14 @@ pipeline {
             steps {
               script{
 	        sh "mvn package -DskipTests=true"
-		sh "mvn -B deploy:deploy-file -Durl=$NEXUS_URL -DrepositoryId=$NEXUS_REPO_ID -DgroupId=$GROUP_ID -Dversion=$NEXUS_VERSION -DartifactId=$ARTIFACT_ID -Dpackaging=war -Dfile=$FILE_NAME"
+		sh "mvn -B deploy:deploy-file -Durl=$NEXUS_URL -DrepositoryId=$NEXUS_REPO_ID -DgroupId=$GROUP_ID -Dversion=$VERSION -DartifactId=$ARTIFACT_ID -Dpackaging=war -Dfile=$FILE_NAME"
+		 
+		 if ( $? == 0 ) {
+                        sh "echo file uploaded success"
+                    } else {
+                        sh "echo upload failed"
+			exit 1
+                    }
               }
             }
 	  }
